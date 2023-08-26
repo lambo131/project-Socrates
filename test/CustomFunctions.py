@@ -23,17 +23,21 @@ def print_str_as_blocks(str, char_limit=70) -> str:
 
 def remove_extra_lines(str):
     temp = ""
-    repeat_nline = False
+    repeat_nline = 0
+    # remove extra lines
     for i in str:
         if i == "\n":
-            if not repeat_nline:
-                repeat_nline = True
+            if repeat_nline <= 1:
+                repeat_nline+=1
                 temp += i
             else:
                 continue
         else:
             if i != " ":
-                repeat_nline = False
+                repeat_nline = 0
             temp += i
             continue
     return temp
+
+def remove_extra_spaces(str):
+    pass

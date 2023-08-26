@@ -1,5 +1,9 @@
+from langchain.docstore.document import Document
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 
-
+from langchain.document_loaders import WebBaseLoader
+from langchain.document_loaders import PyPDFLoader
+from langchain.docstore.document import Document
 
 
 class DocLoader:
@@ -13,7 +17,11 @@ class DocLoader:
     def get_doc_from_url(url: str) -> Document:
         # get document from url, from website articles
         # add source to doc metadata
-        pass
+        loader = WebBaseLoader(url)
+        doc = loader.load()
+        doc = clean_doc(doc)
+        # docs = split_doc(doc)
+        return doc
 
     def get_doc_from_pdf(file: str) -> Document:
         # get document from pdf files
@@ -23,10 +31,37 @@ class DocLoader:
     def get_doc_from_raw_text(text: str) -> Document:
         # get document from copy and pasted text in the input box
         # add source to doc metadata
-        pass
+        doc =  Document(page_content=text, metadata={"source": "user raw text"})
+        doc = clean_doc(doc)
+        return doc
 
-    def  split_clean_doc(doc: Document) -> Document
-        # clean doc of extra new lines and spaces
+    def clean_doc(doc: Document) -> Document:
+        # clean doc of extra new lines
+        str = doc[0].page_content
+        temp = ""
+        repeat_nline = 0
+        for i in str:
+            if i == "\n":
+                if repeat_nline <= 1:
+                    repeat_nline+=1
+                    temp += i
+                else:
+                    continue
+            else:
+                if i != " ":
+                    repeat_nline = 0
+                temp += i
+                continue
+        doc[0].page_content = temp
+        return doc
 
-    def split_doc(doc: Document): -> Document
+    def split_doc(doc: Document) -> Document:
         # split documents from one big document
+        text_splitter = RecursiveCharacterTextSplitter(
+            # Set a really small chunk size, just to show.
+            chunk_size = self.chunk_size,
+            chunk_overlap = self.chunk_overlap,
+            length_function = len
+        )
+        docs = text_splitter.split_documents(doc)
+        return docs
