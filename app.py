@@ -7,7 +7,10 @@
         DocLoader: Class
         ContentGenerator: Class
 
-    (page) load documents
+    (page 1) load documents
+        description: Use this page to load the text you are reading. Manage and navigate existing
+        subjects here.
+
         create: Subject
             1. selection box
             2. use url, pdf, or raw text(copy and paste) to generate documents
@@ -24,17 +27,26 @@
             1. selection interface based on subject_list
             2. delete item from subject_list based on selection
 
-    (page) summery
-        1. generate: summery
+    (page 2) summery
+        description: This page generates a summary in point-form and in paragraph as the first 
+        step to exploring the text.
 
-        2. generate: points
-
+        1. generate: points
+            .....
+        2. generate: summary
+            .....
         3. update: subject
+            .....
 
-    (page) explore
+    (page 3) explore
+        description: Use this page explore more about the main ideas(summary point-form).
+
         generate: explore_questions
+            .....
         generate: critical_questions
+            .....
         generate: perspectives
+            .....
 
 ||| Classes: 
 
@@ -148,7 +160,6 @@ show_pages(
     ]
 )
 add_page_title()  # Optional method to add title and icon to current page
-
 
 
 if "doc_sources" not in st.session_state:
